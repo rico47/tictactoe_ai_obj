@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.controls label, .controls select, .controls input[type="checkbox"], .controls button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.game-board {
+    display: grid;
+    gap: 5px;
+    margin: 20px auto;
+    border: 2px solid #333;
+    background-color: #eee; /* Background for cells */
+}
+
+/* Dynamic grid columns based on board size */
+.game-board[data-size="3"] {
+    grid-template-columns: repeat(3, 80px);
+    width: 250px; /* 3*80 + 2*5 + 2*2 (gaps + borders) */
+}
+
+.game-board[data-size="4"] {
+    grid-template-columns: repeat(4, 60px);
+    width: 260px; /* 4*60 + 3*5 + 2*2 */
+}
+
+.game-board[data-size="5"] {
+    grid-template-columns: repeat(5, 50px);
+    width: 280px; /* 5*50 + 4*5 + 2*2 */
+}
+
+
+.cell {
+    width: 80px; /* Default for 3x3 */
+    height: 80px; /* Default for 3x3 */
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    transition: background-color 0.2s ease;
+}
+
+.game-board[data-size="4"] .cell {
+    width: 60px;
+    height: 60px;
+    font-size: 2em;
+}
+
+.game-board[data-size="5"] .cell {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8em;
+}
+
+
+.cell:hover:not(.occupied) {
+    background-color: #e0e0e0;
+}
+
+.cell.occupied {
+    cursor: not-allowed;
+}
+
+.cell.X {
+    color: #e74c3c; /* Red */
+}
+
+.cell.O {
+    color: #3498db; /* Blue */
+}
+
+.game-status {
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #555;
+}
+
+.game-status.winner {
+    color: #27ae60; /* Green */
+}
+
+.game-status.draw {
+    color: #f39c12; /* Orange */
+}
