@@ -1,115 +1,236 @@
+/* Import czcionek z Google Fonts dla nowoczesnego wyglądu */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Share Tech Mono', monospace; /* Techniczna czcionka monospace */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
     margin: 0;
-}
+    overflow: hidden;
 
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    /* Techniczny gradient jako tło */
+    background: linear-gradient(135deg, #0a0f18 0%, #1a2a40 100%);
+    color: #e0e0e0;
+
+    /* Opcjonalny efekt "matrycowy" lub siatki na tle */
+    background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    background-attachment: fixed;
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: #00bcd4 !important;
+    text-shadow: 0 0 10px rgba(0, 188, 212, 0.7);
+    letter-spacing: 2px;
 }
 
-.controls {
-    margin-bottom: 20px;
+.card {
+    background-color: rgba(10, 15, 24, 0.9);
+    border: 1px solid rgba(0, 188, 212, 0.5);
+    box-shadow: 0 0 20px rgba(0, 188, 212, 0.3), 0 0 40px rgba(0, 188, 212, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
 }
 
-.controls label, .controls select, .controls input[type="checkbox"], .controls button {
-    margin-right: 10px;
-    margin-bottom: 10px;
+.controls label {
+    color: #a0a0a0;
 }
 
+.form-select,
+.form-control,
+.form-check-input {
+    background-color: #1a2a40 !important;
+    color: #e0e0e0 !important;
+    border-color: #00bcd4 !important;
+}
+
+.form-select option {
+    background-color: #1a2a40;
+    color: #e0e0e0;
+}
+
+.form-select:focus,
+.form-check-input:focus {
+    border-color: #00e5ff !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 229, 255, 0.4) !important;
+}
+
+.btn-primary {
+    background-color: #00bcd4 !important;
+    color: #0a0f18 !important;
+    border-color: #00bcd4 !important;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5) !important;
+}
+
+.btn-primary:hover {
+    background-color: #00e5ff !important;
+    border-color: #00e5ff !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.7) !important;
+    transform: translateY(-2px);
+}
+
+.form-check-input:checked {
+    background-color: #00bcd4 !important;
+    border-color: #00bcd4 !important;
+}
+
+/* Plansza gry */
 .game-board {
     display: grid;
-    gap: 5px;
-    margin: 20px auto;
-    border: 2px solid #333;
-    background-color: #eee; /* Background for cells */
+    gap: 8px;
+    border: 3px solid #00bcd4;
+    background-color: rgba(26, 42, 64, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+    /* Usunięto position: relative, bo game-status nie jest już dzieckiem */
 }
 
-/* Dynamic grid columns based on board size */
+/* Dynamiczne kolumny siatki na podstawie rozmiaru planszy */
 .game-board[data-size="3"] {
-    grid-template-columns: repeat(3, 80px);
-    width: 250px; /* 3*80 + 2*5 + 2*2 (gaps + borders) */
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    width: 316px;
+    height: 316px;
 }
 
 .game-board[data-size="4"] {
-    grid-template-columns: repeat(4, 60px);
-    width: 260px; /* 4*60 + 3*5 + 2*2 */
+    grid-template-columns: repeat(4, 75px);
+    grid-template-rows: repeat(4, 75px);
+    width: 322px;
+    height: 322px;
 }
 
 .game-board[data-size="5"] {
-    grid-template-columns: repeat(5, 50px);
-    width: 280px; /* 5*50 + 4*5 + 2*2 */
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(5, 60px);
+    width: 316px;
+    height: 316px;
 }
 
-
+/* Komórki planszy */
 .cell {
-    width: 80px; /* Default for 3x3 */
-    height: 80px; /* Default for 3x3 */
-    background-color: #fff;
+    background-color: rgba(10, 15, 24, 0.8);
+    color: #e0e0e0;
+    border: 1px solid rgba(0, 188, 212, 0.3);
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em;
+    font-size: 3.5em; /* Domyślny rozmiar dla 3x3 */
     font-weight: bold;
     cursor: pointer;
-    border: 1px solid #ccc;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    transition: background-color 0.2s ease;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; /* Usunięto opacity */
 }
 
+/* Konkretne rozmiary czcionek dla różnych rozmiarów planszy */
+.game-board[data-size="3"] .cell {
+    font-size: 3.5em;
+}
 .game-board[data-size="4"] .cell {
-    width: 60px;
-    height: 60px;
-    font-size: 2em;
+    font-size: 2.8em;
 }
-
 .game-board[data-size="5"] .cell {
-    width: 50px;
-    height: 50px;
-    font-size: 1.8em;
+    font-size: 2.2em;
 }
 
 
 .cell:hover:not(.occupied) {
-    background-color: #e0e0e0;
+    background-color: rgba(26, 42, 64, 0.9);
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
 }
 
 .cell.occupied {
     cursor: not-allowed;
+    background-color: rgba(10, 15, 24, 0.6);
 }
 
 .cell.X {
-    color: #e74c3c; /* Red */
+    color: #ff3366;
+    text-shadow: 0 0 8px rgba(255, 51, 102, 0.7);
 }
 
 .cell.O {
-    color: #3498db; /* Blue */
+    color: #33ccff;
+    text-shadow: 0 0 8px rgba(51, 204, 255, 0.7);
 }
 
+/* Status gry - powrót do standardowego stylu, zwiększenie rozmiaru */
 .game-status {
-    margin-top: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #555;
+    /* Usuwamy style absolute positioning, opacity, pointer-events, z-index, background-color */
+    /* Bootstrapowe klasy `text-center fs-2 fw-bold` już zajmują się wyśrodkowaniem, rozmiarem fontu i pogrubieniem */
+    color: #e0e0e0; /* Domyślny kolor tekstu */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Lekki cień tekstu */
+    min-height: 2.5em; /* Zapewnij minimalną wysokość, żeby tekst nie "skakał" */
+    display: flex; /* Użyj flexbox, żeby tekst był zawsze wyśrodkowany pionowo */
+    justify-content: center;
+    align-items: center;
 }
 
 .game-status.winner {
-    color: #27ae60; /* Green */
+    color: #66ff66;
+    text-shadow: 0 0 10px rgba(102, 255, 102, 0.7);
 }
 
 .game-status.draw {
-    color: #f39c12; /* Orange */
+    color: #ffcc00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}
+
+/* Usunięto stylizację komórek, gdy gra jest zakończona (.game-board.game-over) */
+
+
+/* Responsywność */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 2em;
+        letter-spacing: 1px;
+    }
+
+    .game-board[data-size="3"] {
+        grid-template-columns: repeat(3, 70px);
+        grid-template-rows: repeat(3, 70px);
+        width: 226px;
+        height: 226px;
+    }
+
+    .game-board[data-size="4"] {
+        grid-template-columns: repeat(4, 50px);
+        grid-template-rows: repeat(4, 50px);
+        width: 212px;
+        height: 212px;
+    }
+
+    .game-board[data-size="5"] {
+        grid-template-columns: repeat(5, 40px);
+        grid-template-rows: repeat(5, 40px);
+        width: 206px;
+        height: 206px;
+    }
+
+    .game-board[data-size="3"] .cell {
+        font-size: 2em;
+    }
+    .game-board[data-size="4"] .cell {
+        font-size: 1.6em;
+    }
+    .game-board[data-size="5"] .cell {
+        font-size: 1.4em;
+    }
+    .game-status {
+        font-size: 1.5em !important; /* Wymuś mniejszy, ale nadal duży rozmiar na małych ekranach */
+    }
 }

@@ -2,27 +2,33 @@ const gameBoard = document.getElementById('game-board');
 const gameStatus = document.getElementById('game-status');
 const resetButton = document.getElementById('reset-button');
 const boardSizeSelect = document.getElementById('board-size');
+const playerMarkSelect = document.getElementById('player-mark');
 const vsAiCheckbox = document.getElementById('vs-ai');
 
 let currentGameState = {};
 
 /**
- * Initializes the game board and state from the provided game state.
- * @param {object} gameState The current state of the game.
+ * Inicjalizuje planszę gry i stan na podstawie dostarczonego stanu gry.
+ * @param {object} gameState Bieżący stan gry.
  */
 function initializeGame(gameState) {
     currentGameState = gameState;
+    // Ustawia kontrolki tak, aby odpowiadały bieżącemu stanowi gry
+    boardSizeSelect.value = currentGameState.board_size;
+    vsAiCheckbox.checked = currentGameState.vs_ai;
+    playerMarkSelect.value = currentGameState.human_player_mark;
+
     renderBoard();
     updateStatus();
     setupEventListeners();
 }
 
 /**
- * Renders the Tic-Tac-Toe board based on the current game state.
+ * Renderuje planszę Kółko i Krzyżyk na podstawie bieżącego stanu gry.
  */
 function renderBoard() {
     gameBoard.innerHTML = '';
-    gameBoard.setAttribute('data-size', currentGameState.board_size); // Set data-size for CSS
+    gameBoard.setAttribute('data-size', currentGameState.board_size); // Ustawia data-size dla CSS
 
     currentGameState.board.forEach((cellValue, index) => {
         const cell = document.createElement('div');
@@ -32,15 +38,15 @@ function renderBoard() {
 
         if (cellValue !== '') {
             cell.classList.add('occupied');
-            cell.classList.add(cellValue); // Add X or O class for styling
+            cell.classList.add(cellValue); // Dodaje klasę X lub O do stylizacji
         }
 
-        // Add event listener only if the game is not over and cell is empty
+        // Dodaje nasłuch zdarzeń tylko, jeśli gra nie jest zakończona, a komórka jest pusta
         if (!currentGameState.game_over && cellValue === '') {
             cell.addEventListener('click', handleCellClick);
         } else if (currentGameState.game_over) {
-             // If game is over, remove click listener from all cells
-             cell.removeEventListener('click', handleCellClick);
+             // Jeśli gra jest zakończona, upewnij się, że nasłuch zdarzeń kliknięcia jest usunięty ze wszystkich komórek
+             cell.removeEventListener('click', handleCellClick); // Dobra praktyka usuwania, jeśli istnieje
         }
 
         gameBoard.appendChild(cell);
@@ -48,26 +54,26 @@ function renderBoard() {
 }
 
 /**
- * Updates the game status message.
+ * Aktualizuje komunikat o stanie gry.
  */
 function updateStatus() {
     if (currentGameState.game_over) {
         if (currentGameState.winner === 'Remis') {
-            gameStatus.textContent = 'REMIS!';
+            gameStatus.textContent = 'Remis!'; // <--- Polski komunikat
             gameStatus.className = 'game-status draw';
         } else if (currentGameState.winner) {
-            gameStatus.textContent = `${currentGameState.winner} Wygrywa!`;
+            gameStatus.textContent = `${currentGameState.winner} wygrywa!`; // <--- Polski komunikat
             gameStatus.className = 'game-status winner';
         }
     } else {
-        gameStatus.textContent = `Obecny gracz: ${currentGameState.current_player}`;
+        gameStatus.textContent = `Aktualny gracz: ${currentGameState.current_player}`; // <--- Polski komunikat
         gameStatus.className = 'game-status';
     }
 }
 
 /**
- * Handles a click on a game cell.
- * @param {Event} event The click event.
+ * Obsługuje kliknięcie na komórkę gry.
+ * @param {Event} event Zdarzenie kliknięcia.
  */
 async function handleCellClick(event) {
     if (currentGameState.game_over) {
@@ -89,17 +95,18 @@ async function handleCellClick(event) {
         renderBoard();
         updateStatus();
     } catch (error) {
-        console.error('Błąd podczas ruchu:', error);
+        console.error('Błąd podczas wykonywania ruchu:', error); // <--- Polski komunikat
     }
 }
 
 /**
- * Sets up event listeners for control buttons.
+ * Ustawia nasłuch zdarzeń dla przycisków sterowania.
  */
 function setupEventListeners() {
     resetButton.addEventListener('click', async () => {
         const boardSize = parseInt(boardSizeSelect.value);
         const vsAi = vsAiCheckbox.checked;
+        const playerMark = playerMarkSelect.value;
 
         try {
             const response = await fetch('/reset_game', {
@@ -107,16 +114,12 @@ function setupEventListeners() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ board_size: boardSize, vs_ai: vsAi }),
+                body: JSON.stringify({ board_size: boardSize, vs_ai: vsAi, player_mark: playerMark }),
             });
             const data = await response.json();
-            initializeGame(data); // Re-initialize with the new game state
+            initializeGame(data); // Ponowna inicjalizacja nowym stanem gry
         } catch (error) {
-            console.error('Błąd, restart gry:', error);
+            console.error('Błąd podczas resetowania gry:', error); // <--- Polski komunikat
         }
     });
-
-    // Optional: Add listeners for board size/AI change if you want immediate updates without reset button
-    // boardSizeSelect.addEventListener('change', () => { /* Logic to reset game */ });
-    // vsAiCheckbox.addEventListener('change', () => { /* Logic to reset game */ });
 }
