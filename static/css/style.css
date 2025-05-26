@@ -22,55 +22,78 @@ body {
     background-attachment: fixed;
 }
 
+/* Animacja dla nagłówka */
+@keyframes neonGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(0, 188, 212, 0.5), /* Subtelny blask */
+                     0 0 10px rgba(0, 188, 212, 0.7),
+                     0 0 20px rgba(0, 188, 212, 0.9);
+        color: #00bcd4; /* Podstawowy kolor neonu */
+    }
+    50% {
+        text-shadow: 0 0 10px rgba(0, 188, 212, 0.7),
+                     0 0 20px rgba(0, 188, 212, 1),
+                     0 0 40px rgba(0, 188, 212, 1),
+                     0 0 80px rgba(0, 188, 212, 1); /* Mocniejszy blask w środku animacji */
+        color: #00e5ff; /* Jaśniejszy kolor neonu */
+    }
+}
+
+/* Nadpisanie domyślnych stylów Bootstrapa dla tekstu */
 h1 {
-    font-family: 'Orbitron', sans-serif;
-    color: #00bcd4 !important;
-    text-shadow: 0 0 10px rgba(0, 188, 212, 0.7);
-    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif; /* Futurytyczna czcionka dla nagłówka */
+    color: #00bcd4 !important; /* Cyjanowy kolor, !important nadpisuje text-white z Bootstrapa */
+    letter-spacing: 2px; /* Rozstrzelenie liter */
+    animation: neonGlow 1.5s ease-in-out infinite alternate; /* Zastosowanie animacji */
 }
 
+/* Styl karty (kontenera gry) */
 .card {
-    background-color: rgba(10, 15, 24, 0.9);
-    border: 1px solid rgba(0, 188, 212, 0.5);
-    box-shadow: 0 0 20px rgba(0, 188, 212, 0.3), 0 0 40px rgba(0, 188, 212, 0.1);
-    backdrop-filter: blur(8px);
+    background-color: rgba(10, 15, 24, 0.9); /* Ciemniejsze, lekko przezroczyste tło */
+    border: 1px solid rgba(0, 188, 212, 0.5); /* Cyjanowa ramka */
+    box-shadow: 0 0 20px rgba(0, 188, 212, 0.3), 0 0 40px rgba(0, 188, 212, 0.1); /* Podwójny cień dla efektu blasku */
+    backdrop-filter: blur(8px); /* Większe rozmycie tła */
     -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
+    border-radius: 12px; /* Lekko zaokrąglone rogi */
 }
 
+/* Kontrolki - dopasowanie do ciemnego motywu */
 .controls label {
-    color: #a0a0a0;
+    color: #a0a0a0; /* Jaśniejsza szarość dla etykiet */
 }
 
+/* Nadpisz kolory Bootstrapa dla select i input */
 .form-select,
 .form-control,
 .form-check-input {
-    background-color: #1a2a40 !important;
-    color: #e0e0e0 !important;
-    border-color: #00bcd4 !important;
+    background-color: #1a2a40 !important; /* Ciemniejsze tło */
+    color: #e0e0e0 !important; /* Jasny tekst */
+    border-color: #00bcd4 !important; /* Cyjanowa ramka */
 }
 
+/* Kolor dla opcji w select */
 .form-select option {
-    background-color: #1a2a40;
+    background-color: #1a2a40; /* Ciemne tło dla opcji */
     color: #e0e0e0;
 }
 
 .form-select:focus,
 .form-check-input:focus {
     border-color: #00e5ff !important;
-    box-shadow: 0 0 0 0.25rem rgba(0, 229, 255, 0.4) !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 229, 255, 0.4) !important; /* Standardowy cień focus Bootstrapa */
 }
 
-.btn-primary {
-    background-color: #00bcd4 !important;
-    color: #0a0f18 !important;
+/* Styl przycisku Reset Game */
+.btn-primary { /* Nadpisz domyślny btn-primary */
+    background-color: #00bcd4 !important; /* Cyjanowy przycisk */
+    color: #0a0f18 !important; /* Ciemny tekst na przycisku */
     border-color: #00bcd4 !important;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5) !important;
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5) !important; /* Efekt blasku na przycisku */
 }
 
 .btn-primary:hover {
-    background-color: #00e5ff !important;
+    background-color: #00e5ff !important; /* Jaśniejszy cyjan po najechaniu */
     border-color: #00e5ff !important;
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.7) !important;
     transform: translateY(-2px);
@@ -84,50 +107,49 @@ h1 {
 /* Plansza gry */
 .game-board {
     display: grid;
-    gap: 8px;
-    border: 3px solid #00bcd4;
-    background-color: rgba(26, 42, 64, 0.7);
+    gap: 8px; /* Odstępy między komórkami */
+    border: 3px solid #00bcd4; /* Cyjanowa ramka planszy */
+    background-color: rgba(26, 42, 64, 0.7); /* Lekko przezroczyste ciemne tło planszy */
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
-    /* Usunięto position: relative, bo game-status nie jest już dzieckiem */
 }
 
 /* Dynamiczne kolumny siatki na podstawie rozmiaru planszy */
 .game-board[data-size="3"] {
     grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    width: 316px;
-    height: 316px;
+    grid-template-rows: repeat(3, 100px); /* Dodajemy wysokość rzędów */
+    width: 316px; /* 3*100 + 2*8 (gap) + 2*3 (border) */
+    height: 316px; /* Utrzymaj kwadratowy kształt */
 }
 
 .game-board[data-size="4"] {
     grid-template-columns: repeat(4, 75px);
-    grid-template-rows: repeat(4, 75px);
-    width: 322px;
+    grid-template-rows: repeat(4, 75px); /* Dodajemy wysokość rzędów */
+    width: 322px; /* 4*75 + 3*8 + 2*3 */
     height: 322px;
 }
 
 .game-board[data-size="5"] {
     grid-template-columns: repeat(5, 60px);
-    grid-template-rows: repeat(5, 60px);
-    width: 316px;
+    grid-template-rows: repeat(5, 60px); /* Dodajemy wysokość rzędów */
+    width: 316px; /* 5*60 + 4*8 + 2*3 */
     height: 316px;
 }
 
 /* Komórki planszy */
 .cell {
-    background-color: rgba(10, 15, 24, 0.8);
-    color: #e0e0e0;
-    border: 1px solid rgba(0, 188, 212, 0.3);
+    background-color: rgba(10, 15, 24, 0.8); /* Ciemne tło komórek */
+    color: #e0e0e0; /* Domyślny kolor tekstu komórek */
+    border: 1px solid rgba(0, 188, 212, 0.3); /* Subtelna cyjanowa ramka komórek */
     border-radius: 4px;
-    display: flex;
+    display: flex; /* Nadal flexbox dla centrowania zawartości */
     justify-content: center;
     align-items: center;
     font-size: 3.5em; /* Domyślny rozmiar dla 3x3 */
     font-weight: bold;
     cursor: pointer;
-    box-sizing: border-box;
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; /* Usunięto opacity */
+    box-sizing: border-box; /* Ważne, aby padding i border były wliczone w rozmiar */
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
 /* Konkretne rozmiary czcionek dla różnych rozmiarów planszy */
@@ -141,11 +163,10 @@ h1 {
     font-size: 2.2em;
 }
 
-
 .cell:hover:not(.occupied) {
-    background-color: rgba(26, 42, 64, 0.9);
+    background-color: rgba(26, 42, 64, 0.9); /* Podświetlenie po najechaniu */
     transform: scale(1.05);
-    box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.6); /* Blask po najechaniu */
 }
 
 .cell.occupied {
@@ -154,19 +175,17 @@ h1 {
 }
 
 .cell.X {
-    color: #ff3366;
+    color: #ff3366; /* Neonowy róż dla X */
     text-shadow: 0 0 8px rgba(255, 51, 102, 0.7);
 }
 
 .cell.O {
-    color: #33ccff;
+    color: #33ccff; /* Neonowy niebieski dla O */
     text-shadow: 0 0 8px rgba(51, 204, 255, 0.7);
 }
 
 /* Status gry - powrót do standardowego stylu, zwiększenie rozmiaru */
 .game-status {
-    /* Usuwamy style absolute positioning, opacity, pointer-events, z-index, background-color */
-    /* Bootstrapowe klasy `text-center fs-2 fw-bold` już zajmują się wyśrodkowaniem, rozmiarem fontu i pogrubieniem */
     color: #e0e0e0; /* Domyślny kolor tekstu */
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Lekki cień tekstu */
     min-height: 2.5em; /* Zapewnij minimalną wysokość, żeby tekst nie "skakał" */
@@ -184,8 +203,6 @@ h1 {
     color: #ffcc00;
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
 }
-
-/* Usunięto stylizację komórek, gdy gra jest zakończona (.game-board.game-over) */
 
 
 /* Responsywność */
@@ -231,6 +248,6 @@ h1 {
         font-size: 1.4em;
     }
     .game-status {
-        font-size: 1.5em !important; /* Wymuś mniejszy, ale nadal duży rozmiar na małych ekranach */
+        font-size: 1.5em !important;
     }
 }
